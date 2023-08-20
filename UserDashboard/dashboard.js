@@ -25,29 +25,11 @@ import {
 
 const userFullName = document.querySelector("#loginUserName");
 const blogTitle = document.querySelector("#blogTitle");
-const currentUserDescription = document.querySelector(
-    "#currentUserDescription"
-);
-const userEmailAddress = document.querySelector("#userEmailAddress");
 const logOutbutton = document.querySelector("#logoutBtn");
 const blogInputField = document.querySelector("#postInputField");
 const postBlogBtn = document.querySelector(".postBlogBtn");
 const blogPostArea = document.querySelector(".blogPostArea");
-const editFirstName = document.querySelector("#editFirstName");
-const editSurName = document.querySelector("#editSurName");
-const editUserName = document.querySelector("#editUserName");
-const editUserEmail = document.querySelector("#editUserEmail");
-const editUserMob = document.querySelector("#editUserMob");
-const editUserDescription = document.querySelector("#editUserDescription");
-const profilePic = document.querySelector("#profilePic");
-const updateBtn = document.querySelector("#updateBtn");
-const postProfilePic = document.querySelector("#postProfilePic");
-const showPostProfilePic = document.querySelector("#showPostProfilePic");
-const showPostUserFullname = document.querySelector("#showPostUserFullname");
-const postImagefile = document.querySelector("#postImagefile");
-const updatePostImagefile = document.querySelector("#updatePostImagefile");
-const updatePostInputField = document.querySelector("#updatePostInputField");
-const updatePostBtn = document.querySelector("#updatePostBtn");
+
 
 // console.log(userFullName);
 
@@ -76,6 +58,7 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+
 async function getUserData(userUid) {
     try {
         const docRef = doc(db, "users", userUid);
@@ -100,6 +83,7 @@ async function getUserData(userUid) {
         console.log(error);
     }
 }
+
 
 const enablePostBtn = () => {
     if (postInputField.value === "") {
@@ -192,12 +176,12 @@ async function showBlogs() {
             </div>
         </div>
         <div class="mt-4">
-            <p>
+            <p class="wordWrap">
                 ${blogContent}
             </p>
             <div class="d-flex">
-                        <a class="nav-link fw-bold mt-1 appColor me-4" aria-current="page" onclick="deleteBlog('${postId}')" style="cursor: pointer;" id="deleteBlog">Delete</a>
-                        <a class="nav-link fw-bold mt-1 appColor" aria-current="page" onclick="editBlog('${postId}')" style="cursor: pointer;" id="editBlog">Edit</a>
+                        <a class="nav-link fw-bold mt-1 appColor me-4" aria-current="page" onclick="deleteBlog('${postId}', '${blogCreatorId}')" style="cursor: pointer;" id="deleteBlog">Delete</a>
+                        <a class="nav-link fw-bold mt-1 appColor" aria-current="page" onclick="editBlog('${postId}', '${blogCreatorId}')" style="cursor: pointer;" id="editBlog">Edit</a>
                     </div>
         </div>`;
 
@@ -223,13 +207,22 @@ async function getAutherData(authorUid) {
     }
 }
 
-const editBlog = (uId) => {
+const editBlog = (uId, creatorId) => {
     // console.log(uId);
-    editPostFlag = true
-    postBlogBtn.innerHTML = "Update Blog"
-    postBlogBtn.removeEventListener('click', postBlogHandler)
-    postBlogBtn.addEventListener('click', updatePostHandler)
-    postIdGlobal = uId;
+    if (currentLoginUserId == creatorId) {
+        editPostFlag = true
+        postBlogBtn.innerHTML = "Update Blog"
+        postBlogBtn.removeEventListener('click', postBlogHandler)
+        postBlogBtn.addEventListener('click', updatePostHandler)
+        postIdGlobal = uId;
+
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'you are not authorized to edit this blog'
+        })
+        console.log("you are not authorized to edit this blog");
+    }
 };
 
 const updatePostHandler = () => {
@@ -256,24 +249,30 @@ const updatePostHandler = () => {
 };
 
 
-const deleteBlog = async (uId) => {
+const deleteBlog = async (uId, creatorId) => {
     // console.log(uId);
+    // console.log(creatorId);
+    // console.log(currentLoginUserId);
     Swal.fire({
         position: 'center',
         icon: 'success',
         title: 'Blog Deleted Successfully',
         showConfirmButton: false,
-        timer: 1500
+        timer: 2000
     })
     try {
-        if (uId) {
+        if (currentLoginUserId == creatorId) {
             await deleteDoc(doc(db, "myBlogs", uId));
             const dPost = document.getElementById(uId);
             dPost.remove();
 
             console.log("Deleted Successfully");
         } else {
-            console.log("show some error");
+            Swal.fire({
+                icon: 'error',
+                title: 'you are not authorized to delete this blog'
+            })
+            console.log("you are not able to delete this blog");
         }
     } catch (error) {
         console.log(error);
@@ -294,8 +293,7 @@ const logoutHandler = async () => {
 logOutbutton.addEventListener("click", logoutHandler);
 postBlogBtn.addEventListener("click", postBlogHandler);
 postInputField.addEventListener("keyup", enablePostBtn);
-//   updateBtn.addEventListener("click", updateProfileHandler);
-//   updatePostBtn.addEventListener("click", updatePostHandler);
+
 
 window.editBlog = editBlog;
 window.deleteBlog = deleteBlog;

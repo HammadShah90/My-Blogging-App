@@ -32,7 +32,7 @@ async function signUpHandler() {
     if (userFirstName.value == "" || userSurName.value == "" || userSignUpEmail.value == "" || userSignUpPassword.value == "") {
         Swal.fire({
             icon: 'error',
-            title: 'Please fill all input fields'
+            title: 'Kindly fill up all input fields'
         })
 
     } else {
@@ -70,7 +70,7 @@ async function signUpHandler() {
                 Swal.fire({
                     title: '<b>Signup Successfully Done</b>',
                     html: 'Please wait <b></b> milliseconds',
-                    timer: 4000,
+                    timer: 3000,
                     timerProgressBar: true,
                     didOpen: () => {
                         Swal.showLoading()
@@ -101,27 +101,27 @@ async function signUpHandler() {
                     if (errorCode == "auth/missing-email") {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Shabash Bacha Email to likho'
+                            title: 'Email missing kindly provide email address'
                         })
                     } else if (errorCode == "auth/missing-password") {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Shabash Bacha password to likho'
+                            title: 'Password missing kindly provide email address'
                         })
                     } else if (errorCode == "auth/weak-password") {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Your password should be contains 8 characters'
+                            title: 'Your password is very weak should be contains 8 characters'
                         })
                     } else if (errorCode == "auth/email-already-in-use") {
                         Swal.fire({
                             icon: 'error',
-                            title: 'Shabash Bacha email dusra likho ye already use hai'
+                            title: 'This email address is already in use kindly provide another email address'
                         })
                     } else {
                         return Swal.fire({
                             icon: 'error',
-                            title: 'Shabash Bacha Email or password sahi likho'
+                            title: 'Kindly provide email and password'
                         })
                     }
                 }
@@ -148,7 +148,7 @@ async function addUserHandler(userUid) {
         // console.error("Error adding document: ", error);
         Swal.fire({
             icon: 'error',
-            title: 'Shabash Bacha sari feilds fill karo'
+            title: 'Kindly fill up all input fields'
         })
     }
 }

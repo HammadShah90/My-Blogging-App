@@ -10,57 +10,55 @@ import {
     orderBy,
 } from "../firebaseConfig.js";
 
-const profileUserFullname = document.querySelector("#profileUserFullname");
-const profileUserName = document.querySelector("#profileUserName");
-const profileUserDescription = document.querySelector(
-    "#profileUserDescription"
-);
-const profileUserPic = document.querySelector("#profileUserPic");
+const bloggerEmailAddress = document.querySelector("#bloggerEmailAddress");
+const bloggerFullName = document.querySelector("#bloggerFullName");
+const bloggerImage = document.querySelector("#bloggerImage");
 const blogPostArea = document.querySelector(".blogPostArea");
-const logOutbutton = document.querySelector("#logOut");
-const navProfilePic = document.querySelector("#navProfilePic");
-const followersCount = document.querySelector(".followersCount");
-const followingCount = document.querySelector(".followingCount");
 
-// ===========>>>>>>>> Get User data <<<<<<<<=========
+let bloggerName;
+let bloggerPic;
 
-// onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//         const uid = user.uid;
-//         // console.log(uid);
-//         //   getUserData(uid)
-//         //   getUserDataToEditProfile(uid)
-//         getUserData(uid);
-//         getUserDataToEditProfile(uid);
-//         showPosts(uid);
-//         currentLoginUserId = uid;
-//     } else {
-//         window.location.href = `../dashboard/dashboard.html`;
-//     }
-// });
-
+const urlParams = new URLSearchParams(window.location.search);
+const bloggerID = urlParams.get('bloggerID')
+console.log(bloggerID);
 
 // ===========>>>>>>>> Show Current User Posts <<<<<<<<=========
 
-async function showBlogs() {
-    try {
-        blogPostArea.innerHTML = "";
+async function getAutherData(bloggerID) {
+    // console.log(authorUid, "==>>authorUid")
 
-        const q = query(collection(db, "myBlogs"), orderBy("currentTime", "desc"));
+    const docRef = doc(db, "users", bloggerID);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        // console.log(docSnap.data().userFirstName);
+        bloggerEmailAddress.innerHTML = docSnap.data().userEmail
+        bloggerFullName.innerHTML = `${docSnap.data().userFirstName}${docSnap.data().userSurName}`
+        bloggerImage.src = docSnap.data().updatedProfilePic || "../Assets/dummy-image.jpg"
+        bloggerName = `${docSnap.data().userFirstName} ${docSnap.data().userSurName}`
+        bloggerPic = docSnap.data().updatedProfilePic
+        return docSnap.data();
+    } else {
+        console.log("No such document!");
+    }
+}
+
+getAutherData(bloggerID)
+
+
+const showBlogs = async (bloggerID) => {
+    try {
+        const q = query(collection(db, "myBlogs"), where("blogCreatorId", "==", bloggerID));
 
         const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            // console.log(doc.id, " => ", doc.data());
 
-        querySnapshot.forEach(async (doc) => {
-            // console.log(doc);
-            const postId = doc.id;
-
-            const { blogTitle, blogContent, blogCreatorId, currentTime } =
-                doc.data();
+            const { blogTitle, blogContent, blogCreatorId, currentTime } = doc.data();
             // console.log(postContent);
-            // console.log(postCreatorId);
+            console.log(blogCreatorId);
             // console.log(currentTime.toDate());
-
-            const autherDetails = await getAutherData(blogCreatorId);
 
             const postElement = document.createElement("div");
             postElement.setAttribute("class", "border p-3 mt-2 mb-3 bgBlogPostColor");
@@ -68,7 +66,7 @@ async function showBlogs() {
             postElement.setAttribute("id", doc.id);
             const contentOfPost = `<div class="d-flex align-items-center justify-content-between">
             <div class="d-flex align-items-center">
-                <img src=${autherDetails?.profilePic ||
+                <img src=${ bloggerPic ||
                 "../Assets/dummy-image.jpg"
                 } alt="" class="rounded me-3"
                     style="width: 70px; height: 70px" />
@@ -79,8 +77,7 @@ async function showBlogs() {
                         </h5>
                         <p class="mb-0 fw-medium" style="color: #036796;">
                             <span id="blogPostUserName">
-                            ${autherDetails?.userFirstName
-                } ${autherDetails?.userSurName} -
+                            ${bloggerName} -
                             </span>
                             <span id="blogPostTime">
                             ${moment(currentTime?.toDate()).fromNow()}
@@ -91,10 +88,9 @@ async function showBlogs() {
             </div>
         </div>
         <div class="mt-4">
-            <p>
+            <p class="wordWrap">
                 ${blogContent}
             </p>
-            <a class="nav-link fw-bold mt-1 appColor" aria-current="page" href="./UserProfile/profile.html">See all from this user</a>
         </div>`;
 
             postElement.innerHTML = contentOfPost;
@@ -106,17 +102,7 @@ async function showBlogs() {
     }
 }
 
-async function getAutherData(authorUid) {
-    // console.log(authorUid, "==>>authorUid")
+showBlogs(bloggerID)
 
-    const docRef = doc(db, "users", authorUid);
-    const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-        return docSnap.data();
-    } else {
-        console.log("No such document!");
-    }
-}
 
-showBlogs()

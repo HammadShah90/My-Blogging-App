@@ -47,26 +47,26 @@ async function loginHandler(userID) {
       if (errorCode == "auth/invalid-email") {
         Swal.fire({
           icon: 'error',
-          title: 'Shabash Bacha Email to likho'
+          title: 'your email is not invalid kindly provide some valid email'
         })
       } else if (errorCode == "auth/missing-password") {
         Swal.fire({
           icon: 'error',
-          title: 'Shabash Bacha password to likho'
+          title: 'your password missing kindly provide password'
         })
       } else if (errorCode == "auth/wrong-password") {
         Swal.fire({
           icon: 'error',
-          title: 'Shabash Bacha Password sahi likho'
+          title: 'Your entered worng password'
         })
       } else if (errorCode == "auth/user-not-found") {
         Swal.fire({
           icon: 'error',
-          title: 'Shabash Bacha ye user signUp nhi hai pehle signUp karo'
+          title: 'This user is not found kindly signup'
         })
         let swalOk = document.querySelector('.swal2-confirm')
         swalOk.addEventListener("click", () => {
-          window.location.href = "./signUp/signUp.html"
+          window.location.href = "../signUp/signup.html"
         })
       }
     }

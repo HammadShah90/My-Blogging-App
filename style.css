@@ -12,6 +12,10 @@ body{
     color: #a87afd;
 }
 
+.wordWrap {
+    overflow-wrap: break-word;
+}
+
 .navBlog {
     background-color: #a87afd;
     color: #ffffff;

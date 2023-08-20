@@ -12,6 +12,10 @@ body{
     color: #a87afd;
 }
 
+.wordWrap {
+    overflow-wrap: break-word;
+}
+
 .navBlog {
     background-color: #a87afd;
     color: #ffffff;
@@ -54,6 +58,11 @@ body{
     background-color: #a87afd;
 }
 
+.alignDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
 
 
 
@@ -96,6 +105,10 @@ body{
     .sizing {
         padding-left: 34px;
         padding-right: 34px;
+    }
+
+    .row {
+        flex-direction: column-reverse;
     }
 
 }

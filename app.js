@@ -119,10 +119,10 @@ async function showBlogs() {
             </div>
         </div>
         <div class="mt-4">
-            <p>
+            <p class="wordWrap">
                 ${blogContent}
             </p>
-            <a class="nav-link fw-bold mt-1 appColor" aria-current="page" href="./UserProfile/profile.html">See all from this user</a>
+            <a class="nav-link fw-bold mt-1 appColor" aria-current="page" href="./UserProfile/profile.html?bloggerID=${blogCreatorId}">See all from this user</a>
         </div>`;
 
             postElement.innerHTML = contentOfPost;

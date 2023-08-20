@@ -32,12 +32,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.2.0/firebase-storage.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBxo5-XHqpsHoKoS4whmaOP3X7m-d435MA",
-  authDomain: "mini-hackathon-saylani.firebaseapp.com",
-  projectId: "mini-hackathon-saylani",
-  storageBucket: "mini-hackathon-saylani.appspot.com",
-  messagingSenderId: "640790917297",
-  appId: "1:640790917297:web:864143513724e428ddb290"
+  apiKey: "AIzaSyDOEOupY-zVmhoJyzRd_x926mhq_YB8mmQ",
+  authDomain: "my-blogging-app-8e946.firebaseapp.com",
+  projectId: "my-blogging-app-8e946",
+  storageBucket: "my-blogging-app-8e946.appspot.com",
+  messagingSenderId: "313688852357",
+  appId: "1:313688852357:web:02c35b7cd8c98756c7e6ec"
 };
 
 const app = initializeApp(firebaseConfig);

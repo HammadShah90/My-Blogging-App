@@ -17,6 +17,10 @@ body{
     color: #ffffff;
 }
 
+.wordWrap {
+    overflow-wrap: break-word;
+}
+
 #logoutBtn {
     color: #ffffff;
     transition: all 0.5s;
