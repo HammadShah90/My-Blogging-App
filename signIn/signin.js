@@ -47,7 +47,7 @@ async function loginHandler(userID) {
       if (errorCode == "auth/invalid-email") {
         Swal.fire({
           icon: 'error',
-          title: 'your email is not invalid kindly provide some valid email'
+          title: 'your email is not valid kindly provide some valid email'
         })
       } else if (errorCode == "auth/missing-password") {
         Swal.fire({
@@ -57,7 +57,7 @@ async function loginHandler(userID) {
       } else if (errorCode == "auth/wrong-password") {
         Swal.fire({
           icon: 'error',
-          title: 'Your entered worng password'
+          title: 'You entered worng password'
         })
       } else if (errorCode == "auth/user-not-found") {
         Swal.fire({

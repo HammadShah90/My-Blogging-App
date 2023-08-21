@@ -38,9 +38,11 @@ body{
 .bgBlogPostColor {
     background-color: #fafaf6;
 }
+
 .positionScroll {
     overflow-y: scroll;
     height: 75vh;
+    padding-right: 10px;
 }
 
 #positionScrollPostArea::-webkit-scrollbar {

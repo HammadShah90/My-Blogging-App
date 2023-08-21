@@ -32,7 +32,7 @@ async function getAutherData(bloggerID) {
 
     if (docSnap.exists()) {
         // console.log(docSnap.data().userFirstName);
-        bloggerEmailAddress.innerHTML = docSnap.data().userEmail
+        sendEmail(docSnap.data().userEmail)
         bloggerFullName.innerHTML = `${docSnap.data().userFirstName}${docSnap.data().userSurName}`
         bloggerImage.src = docSnap.data().updatedProfilePic || "../Assets/dummy-image.jpg"
         bloggerName = `${docSnap.data().userFirstName} ${docSnap.data().userSurName}`
@@ -104,5 +104,10 @@ const showBlogs = async (bloggerID) => {
 
 showBlogs(bloggerID)
 
-
+const sendEmail = (emailAddress) => {
+    var mail = `mailto:${emailAddress}`
+    bloggerEmailAddress.href = mail;
+    bloggerEmailAddress.innerHTML = emailAddress;
+    // bloggerEmailAddress.click()
+}
 
