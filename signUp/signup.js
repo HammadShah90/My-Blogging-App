@@ -60,34 +60,34 @@ async function signUpHandler() {
 
                 const user = response.user
 
-                console.log(user, "===>>> Response User Data");
+                // console.log(user, "===>>> Response User Data");
 
                 if (user) {
                     addUserHandler(user.uid)
+                    
+                    let timerInterval
+                    Swal.fire({
+                        title: '<b>Signup Successfully Done</b>',
+                        html: 'Please wait <b></b> milliseconds',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: () => {
+                            Swal.showLoading()
+                            const b = Swal.getHtmlContainer().querySelector('b')
+                            timerInterval = setInterval(() => {
+                                b.textContent = Swal.getTimerLeft()
+                            }, 50)
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval)
+                        }
+                    }).then((result) => {
+                        /* Read more about handling dismissals below */
+                        if (result.dismiss === Swal.DismissReason.timer) {
+                            window.Location.href = `../signIn/signin.html`
+                        }
+                    })
                 }
-
-                let timerInterval
-                Swal.fire({
-                    title: '<b>Signup Successfully Done</b>',
-                    html: 'Please wait <b></b> milliseconds',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: () => {
-                        Swal.showLoading()
-                        const b = Swal.getHtmlContainer().querySelector('b')
-                        timerInterval = setInterval(() => {
-                            b.textContent = Swal.getTimerLeft()
-                        }, 50)
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval)
-                    }
-                }).then((result) => {
-                    /* Read more about handling dismissals below */
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        console.log('I was closed by the timer')
-                    }
-                })
 
             } catch (error) {
                 const errorCode = error.code;

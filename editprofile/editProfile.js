@@ -47,7 +47,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     // console.log(user.email);
     const uid = user.uid;
-    console.log(uid);
+    // console.log(uid);
     getUserDataToEditProfile(uid);
     currentLoginUserId = uid;
     // console.log(currentLoginUserId);
@@ -58,7 +58,7 @@ onAuthStateChanged(auth, (user) => {
 
 
 const getUserDataToEditProfile = async (userUid) => {
-  console.log(userUid);
+  // console.log(userUid);
   try {
     const docRef = doc(db, "users", userUid);
     const docSnap = await getDoc(docRef);
@@ -84,7 +84,7 @@ const getUserDataToEditProfile = async (userUid) => {
 };
 
 async function getAutherData(authorUid) {
-  console.log(authorUid, "==>>authorUid")
+  // console.log(authorUid, "==>>authorUid")
 
   const docRef = doc(db, "users", authorUid);
   const docSnap = await getDoc(docRef);

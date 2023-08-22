@@ -20,7 +20,7 @@ let bloggerPic;
 
 const urlParams = new URLSearchParams(window.location.search);
 const bloggerID = urlParams.get('bloggerID')
-console.log(bloggerID);
+// console.log(bloggerID);
 
 // ===========>>>>>>>> Show Current User Posts <<<<<<<<=========
 
@@ -57,7 +57,7 @@ const showBlogs = async (bloggerID) => {
 
             const { blogTitle, blogContent, blogCreatorId, currentTime } = doc.data();
             // console.log(postContent);
-            console.log(blogCreatorId);
+            // console.log(blogCreatorId);
             // console.log(currentTime.toDate());
 
             const postElement = document.createElement("div");
