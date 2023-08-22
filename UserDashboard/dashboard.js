@@ -41,7 +41,6 @@ let postIdGlobal;
 
 // let currentLoginUser;
 
-showBlogs();
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -49,9 +48,9 @@ onAuthStateChanged(auth, (user) => {
         const uid = user.uid;
         // console.log(uid);
         getUserData(uid);
-        //   getUserDataToEditProfile(uid);
+        showBlogs(uid)
         currentLoginUserId = uid;
-        //   showAllUsers(user.email);
+        
         // console.log(currentLoginUserId);
     } else {
         window.location.href = `../signIn/signin.html`;
@@ -60,6 +59,7 @@ onAuthStateChanged(auth, (user) => {
 
 
 async function getUserData(userUid) {
+    // console.log(userUid);
     try {
         const docRef = doc(db, "users", userUid);
         const docSnap = await getDoc(docRef);
@@ -74,7 +74,6 @@ async function getUserData(userUid) {
             // console.log(userEmail);
 
             userFullName.textContent = `${userFirstName} ${userSurName}`;
-
             // console.log(currentLoginUser);
         } else {
             console.log("No such document!");
@@ -101,12 +100,12 @@ const postBlogHandler = async () => {
         Swal.fire({
             icon: 'error',
             title: 'Blog title must be between 5 to 50 characters'
-          })
+        })
     } else if (blogInputField.value.length < 100 || blogInputField.value.length > 3000) {
         Swal.fire({
             icon: 'error',
             title: 'Your Text must be between 100 to 3000 characters'
-          })
+        })
     } else {
         try {
             const docRef = await addDoc(collection(db, "myBlogs"), {
@@ -115,22 +114,28 @@ const postBlogHandler = async () => {
                 blogCreatorId: currentLoginUserId,
                 currentTime: serverTimestamp(),
             });
-    
-            showBlogs();
+
+            // console.log(docRef);
+            showBlogs(currentLoginUserId);
             blogTitle.value = "";
             blogInputField.value = "";
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
         }
     }
 };
 
 
-async function showBlogs() {
+async function showBlogs(userUid) {
+    // console.log(userUid)
     try {
         blogPostArea.innerHTML = "";
 
-        const q = query(collection(db, "myBlogs"), orderBy("currentTime", "desc"));
+        const q = query(
+            collection(db, "myBlogs"),
+            orderBy("currentTime", "desc"),
+            where("blogCreatorId", "==", userUid)
+        );
 
         const querySnapshot = await getDocs(q);
 
@@ -253,19 +258,18 @@ const deleteBlog = async (uId, creatorId) => {
     // console.log(uId);
     // console.log(creatorId);
     // console.log(currentLoginUserId);
-    Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Blog Deleted Successfully',
-        showConfirmButton: false,
-        timer: 2000
-    })
     try {
         if (currentLoginUserId == creatorId) {
             await deleteDoc(doc(db, "myBlogs", uId));
             const dPost = document.getElementById(uId);
             dPost.remove();
-
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Blog Deleted Successfully',
+                showConfirmButton: false,
+                timer: 1500
+            })
             console.log("Deleted Successfully");
         } else {
             Swal.fire({
