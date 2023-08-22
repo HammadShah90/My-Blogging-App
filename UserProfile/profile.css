@@ -67,6 +67,11 @@ body{
     align-items: flex-end;
 }
 
+#bloggerImage {
+    border: 2px solid #a87afd;
+    box-shadow: 3px 3px 10px #a87afd;
+}
+
 
 
 
